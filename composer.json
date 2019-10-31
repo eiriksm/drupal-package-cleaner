@@ -1,0 +1,20 @@
+{
+    "name": "eiriksm/drupal-package-cleaner",
+    "description": "Composer plugin to improve composer performance for Drupal projects",
+    "type": "composer-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [],
+    "require": {
+        "composer-plugin-api": "^1.1"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "eiriksm\\DrupalPackageCleaner\\": "src/"
+        }
+    },
+    "extra": {
+        "class": "eiriksm\\DrupalPackageCleaner\\Plugin"
+    }
+}
