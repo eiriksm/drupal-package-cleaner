@@ -16,7 +16,6 @@ class Plugin implements PluginInterface
    * @param IOInterface $io
    */
   public function activate(Composer $composer, IOInterface $io) {
-
-    $a = 'b';
+    $composer->setRepositoryManager(new RepositoryManager($composer->getRepositoryManager()));
   }
 }
