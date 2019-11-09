@@ -3,11 +3,11 @@
 namespace eiriksm\DrupalPackageCleaner;
 
 use Composer\Cache as CacheOriginal;
-use Composer\IO\IOInterface;
-use Composer\Util\Filesystem;
 
 class Cache extends CacheOriginal
 {
+
+
 
   /**
    * @var \eiriksm\DrupalPackageCleaner\Filterer
@@ -20,7 +20,7 @@ class Cache extends CacheOriginal
       return $this->filterer->filterUneeded($data);
     }
 
-    public function __construct(CacheOriginal $cache) {
+  public function __construct(CacheOriginal $cache) {
       $original_properties = [];
       $ref_class = new \ReflectionClass(CacheOriginal::class);
       foreach (['io', 'root', 'whitelist', 'filesystem'] as $prop) {

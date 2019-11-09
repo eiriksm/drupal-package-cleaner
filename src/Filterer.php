@@ -56,6 +56,7 @@ class Filterer
     }
 
     $copy = json_decode($data);
+    $count_unset = 0;
     foreach ($json->packages as $package_name => $packages_item) {
       $found_it = FALSE;
       foreach (['require'] as $type) {
@@ -67,6 +68,7 @@ class Filterer
             }
             foreach ($json->packages->{$package_name} as $version => $version_item) {
               if ($online_version != $version) {
+                $count_unset++;
                 unset($json->packages->{$package_name}->{$version});
               }
             }
@@ -82,6 +84,9 @@ class Filterer
     }
     if (empty($json->packages)) {
       $json = $copy;
+    }
+    else {
+      $this->io->writeError(sprintf('Removed %d packages for command', $count_unset));
     }
     return json_encode($json);
 

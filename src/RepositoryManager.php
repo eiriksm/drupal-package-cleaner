@@ -2,12 +2,9 @@
 
 namespace eiriksm\DrupalPackageCleaner;
 
-use Composer\Config;
-use Composer\EventDispatcher\EventDispatcher;
-use Composer\IO\IOInterface;
 use Composer\Repository\ComposerRepository;
 use Composer\Repository\RepositoryManager as RepositoryManagerOriginal;
-use Composer\Util\RemoteFilesystem;
+use eiriksm\DrupalPackageCleaner\RemoteFileSystem as RemoteFileSystemCopy;
 
 class RepositoryManager extends RepositoryManagerOriginal {
   public function __construct(RepositoryManagerOriginal $repositoryManager) {
@@ -22,15 +19,12 @@ class RepositoryManager extends RepositoryManagerOriginal {
     $this->setLocalRepository($repositoryManager->getLocalRepository());
     foreach ($repositoryManager->getRepositories() as $repository) {
       if ($repository instanceof ComposerRepository) {
-        $repo_reflected = new \ReflectionClass(ComposerRepository::class);
-        $cache_prop = $repo_reflected->getProperty('cache');
-        $cache_prop->setAccessible(TRUE);
-        $cache_prop->setValue($repository, new Cache($cache_prop->getValue($repository)));
-        $rfs_prop = $repo_reflected->getProperty('rfs');
-        $rfs_prop->setAccessible(TRUE);
-        $rfs_prop->setValue($repository, new \eiriksm\DrupalPackageCleaner\RemoteFileSystem($rfs_prop->getValue($repository)));
+        $wrapped_repo = new WrappedComposerRepository($repository);
+        $cache = new Cache($wrapped_repo->getCache());
+        $wrapped_repo->setCache($cache);
       }
-      $this->addRepository($repository);
+      $this->addRepository($wrapped_repo);
     }
   }
+
 }
