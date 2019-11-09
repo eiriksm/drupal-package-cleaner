@@ -86,7 +86,7 @@ class Filterer
       $json = $copy;
     }
     else {
-      $this->io->writeError(sprintf('Removed %d packages for command', $count_unset));
+      $this->io->writeError(sprintf('Removed %d packages for command', $count_unset), true, IOInterface::DEBUG);
     }
     return json_encode($json);
 
